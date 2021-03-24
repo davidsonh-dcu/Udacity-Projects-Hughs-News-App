@@ -42,9 +42,7 @@ public class News {
     }
 
     /** Return the title of the news article*/
-    public String getTitle(){
-        return mTitle;
-    }
+    public String getTitle(){ return mTitle; }
 
     /** Return the publication date */
     public long getTimeInMilliseconds() {

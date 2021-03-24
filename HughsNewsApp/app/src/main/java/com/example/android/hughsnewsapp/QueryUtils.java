@@ -31,7 +31,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,10 +57,10 @@ public class QueryUtils {
         }
 
         // Extract relevant fields from the JSON response and create a list of {@link News} articles
-        List<News> newsArticles = extractFeatureFromJson(jsonResponse);
+        List<News> newsArticlesList = extractFeatureFromJson(jsonResponse);
 
         // Return the list of {@link News} articles
-        return newsArticles;
+        return newsArticlesList;
     }
 
     /** Returns new URL object from the given string URL. */
@@ -157,7 +156,7 @@ public class QueryUtils {
 
             // Extract the JSONArray associated with the key called "response",
             // which represents a list of response (or news articles).
-            JSONArray newsArray = baseJsonResponse.getJSONArray("response");
+            JSONArray newsArray = baseJsonResponse.getJSONArray("results");
 
             // For each news article in the newsArticleArray, create an {@link News} object
             for (int i = 0; i < newsArray.length(); i++) {
@@ -165,19 +164,17 @@ public class QueryUtils {
                 // Get a single earthquake at position i within the list of earthquakes
                 JSONObject currentNewsArticle = newsArray.getJSONObject(i);
 
-                // For a given earthquake, extract the JSONObject associated with the
-                // key called "results", which represents a list of all properties
-                // for that earthquake.
-                JSONObject results = currentNewsArticle.getJSONObject("results");
+                // For a given news article, extract the JSONObject associated with the
+                // key called "currentNewsArticle"
 
                 // Extract the value for the key called "webTitle"
-                String title  = results.getString("webTitle");
+                String title  = currentNewsArticle.getString("webTitle");
 
                 // Extract the value for the key called "webPublicationDate"
-                long time = results.getLong("webPublicationDate");
+                long time = currentNewsArticle.getLong("webPublicationDate");
 
                 // Extract the value for the key called "webUrl"
-                String url = results.getString("webUrl");
+                String url = currentNewsArticle.getString("webUrl");
 
                 // Create a new {@link News} object with the Title, time and URL from the JSON response.
                 News news = new News(title, time, url);

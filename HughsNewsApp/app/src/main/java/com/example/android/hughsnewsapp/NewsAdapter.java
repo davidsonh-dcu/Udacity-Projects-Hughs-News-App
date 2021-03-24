@@ -16,15 +16,11 @@
 package com.example.android.hughsnewsapp;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,10 +37,10 @@ public class NewsAdapter extends ArrayAdapter<News> {
     /**
      * Constructs a new {@link NewsAdapter}.
      * @param context of the app
-     * @param news is the list of news articles, which is the data source of the adapter
+     * @param newsArticlesList is the list of news articles, which is the data source of the adapter
      */
-    public NewsAdapter(Context context, List<News> news) {
-        super(context, 0, news);
+    public NewsAdapter(Context context, List<News> newsArticlesList) {
+        super(context, 0, newsArticlesList);
     }
     /**
      * Returns a list item view that displays information about the news at the given position
@@ -64,7 +60,7 @@ public class NewsAdapter extends ArrayAdapter<News> {
         News currentNews = getItem(position);
 
         // Find the TextView with view ID title
-        TextView titleOfArticleTextView = (TextView) listItemView.findViewById(R.id.news_article_title_textView);
+        TextView titleOfArticleTextView = listItemView.findViewById(R.id.news_article_title_textView);
         // get the title of the news article from the current location news object and set in title view
         titleOfArticleTextView.setText(currentNews.getTitle());
 
@@ -74,7 +70,7 @@ public class NewsAdapter extends ArrayAdapter<News> {
         String formattedDate = formatDate(dateObject);
 
         // Find the TextView with view ID publication date
-        TextView publicationDateTextView = (TextView) listItemView.findViewById(R.id.article_publication_date_textView);
+        TextView publicationDateTextView = listItemView.findViewById(R.id.article_publication_date_textView);
         // get the publication date  of the news article from the current location news object and set in date view
         publicationDateTextView.setText(formattedDate);
 
