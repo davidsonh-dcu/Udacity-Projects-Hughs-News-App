@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) 2021 Hugh Davidson
  *
@@ -15,7 +16,6 @@
  */
 package com.example.android.hughsnewsapp;
 import android.app.LoaderManager;
-import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
@@ -25,7 +25,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -37,7 +36,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
     public static final String LOG_TAG = NewsActivity.class.getName();
 
     /** URL for Brexit news data from the Guardian news site  dataset */
-    private static final String GUARDIAN_REQUEST_URL ="https://content.guardianapis.com/search?page-size=10&q=brexit%20AND%20debate&api-key=test";
+    private static final String GUARDIAN_REQUEST_URL ="https://content.guardianapis.com/search?";
 
     /** Constant value for the earthquake loader ID. */
     private static final int NEWS_LOADER_ID = 1;
@@ -61,14 +60,14 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         newsListView.setEmptyView(mEmptyStateTextView);
 
         // Create a new adapter that takes an empty list of news articles as input
-        mAdapter = new NewsAdapter(this, new ArrayList<News>());
+        mAdapter = new NewsAdapter(this, new ArrayList<>());
 
         // Set the adapter on the {@link ListView} so the list can be populated in the user interface
         newsListView.setAdapter(mAdapter);
 
         // Set an item click listener on the ListView, which sends an intent to a web browser
         // to open a website with more information about the selected news article.
-        newsListView.setOnItemClickListener((AdapterView<?> adapterView, View view, int position, long l) -> {
+        newsListView.setOnItemClickListener((adapterView, view, position, l) -> {
             // Find the current news article that was clicked on
             News currentNews = mAdapter.getItem(position);
 
@@ -110,12 +109,23 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     // onCreateLoader instantiates and returns a new Loader for the given ID
+    // Uri builder to construct the URL string to pass into the Loader constructor
     @Override
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle){
+        // parse breaks apart the URI string that's passed into its parameter
+        Uri baseUri = Uri.parse(GUARDIAN_REQUEST_URL);
+
+        // buildUpon prepares the baseUri that was just parsed so that the add query param can added to it
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+
+        // Append query parameter and its value. E.g. the 'order-by=relevance'
+        uriBuilder.appendQueryParameter("order-by", "relevance");
+        uriBuilder.appendQueryParameter("page-size", "20");
+        uriBuilder.appendQueryParameter("q", "brexit");
+        uriBuilder.appendQueryParameter("api-key", "test");
 
         // Return the completed uri 'https://content.guardianapis.com/search?order-by=newest&q=brexit%2520AND%2520debate&api-key=test'
-        //return new NewsLoader(this, uriBuilder.toString());
-        return new NewsLoader(this, GUARDIAN_REQUEST_URL);
+        return new NewsLoader(this, uriBuilder.toString());
     }
 
     @Override
@@ -128,7 +138,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         mEmptyStateTextView.setText(R.string.no_news);
 
         // Clear the adapter of previous news data
-        mAdapter.clear();
+//        mAdapter.clear();
 
         // If there is a valid list of {@link News} articles, then add them to the adapter's
         // data set. This will trigger the ListView to update.
@@ -142,5 +152,4 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         // Loader reset, so we can clear out our existing data.
         mAdapter.clear();
     }
-
 }

@@ -18,6 +18,9 @@ package com.example.android.hughsnewsapp;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import java.util.List;
 
@@ -45,6 +48,8 @@ public class NewsLoader extends AsyncTaskLoader<List<News>> {
     }
 
     /** This is on a background thread. */
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public List<News> loadInBackground() {
         if (mUrl == null) {
@@ -52,7 +57,6 @@ public class NewsLoader extends AsyncTaskLoader<List<News>> {
         }
 
         // Perform the network request, parse the response, and extract a list of earthquakes.
-        List<News> newsArticlesList = QueryUtils.fetchNewsData(mUrl);
-        return newsArticlesList;
+        return QueryUtils.fetchNewsData(mUrl);
     }
 }

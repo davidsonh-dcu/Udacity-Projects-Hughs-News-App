@@ -22,16 +22,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
- * An {@link NewsAdapter} knows how to create a list item layout for each earthquake
+ * An {@link NewsAdapter} knows how to create a list item layout for each news article
  * in the data source (a list of {@link News} objects).
- *
- * These list item layouts will be provided to an adapter view like ListView
- * to be displayed to the user.
+ * These list item layouts will be provided to an adapter view like ListView to be displayed to the user.
  */
 public class NewsAdapter extends ArrayAdapter<News> {
     /**
@@ -42,6 +38,7 @@ public class NewsAdapter extends ArrayAdapter<News> {
     public NewsAdapter(Context context, List<News> newsArticlesList) {
         super(context, 0, newsArticlesList);
     }
+
     /**
      * Returns a list item view that displays information about the news at the given position
      * in the list of news articles.
@@ -64,13 +61,10 @@ public class NewsAdapter extends ArrayAdapter<News> {
         // get the title of the news article from the current location news object and set in title view
         titleOfArticleTextView.setText(currentNews.getTitle());
 
-        // Create a new Date object from the time in milliseconds for the news article
-        Date dateObject = new Date(currentNews.getTimeInMilliseconds());
-        // Format the date string (i.e. "15 March 2021")
-        String formattedDate = formatDate(dateObject);
-
         // Find the TextView with view ID publication date
         TextView publicationDateTextView = listItemView.findViewById(R.id.article_publication_date_textView);
+
+        String formattedDate = formatDate(currentNews.getPublicationDate());
         // get the publication date  of the news article from the current location news object and set in date view
         publicationDateTextView.setText(formattedDate);
 
@@ -78,9 +72,8 @@ public class NewsAdapter extends ArrayAdapter<News> {
         return listItemView;
     }
 
-    /** Return the formatted date string (i.e. "15 March 2021") from a Date object. */
-    private String formatDate(Date dateObject) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM, yyyy ");
-        return dateFormat.format(dateObject);
+    /** Return the formatted date string (i.e. YYYY-MM-DD) from a Date object.*/
+    private String formatDate(String publicationDate) {
+        return publicationDate.substring(0,10);
     }
 }

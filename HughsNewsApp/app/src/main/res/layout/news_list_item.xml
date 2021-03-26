@@ -13,10 +13,11 @@
     See the License for the specific language governing permissions and
     limitations under the License.-->
 
+<!--    android:layout_height="?android:attr/listPreferredItemHeight"-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:layout_height="70dp"
     android:orientation="horizontal"
     android:paddingEnd="16dp"
     android:paddingLeft="16dp"
@@ -39,7 +40,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:fontFamily="sans-serif-medium"
-            android:maxLines="1"
+            android:maxLines="2"
             android:textColor="@color/black"
             android:textSize="16sp"
             tools:text="Title of article" />
@@ -49,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:maxLines="2"
+            android:maxLines="1"
             android:textColor="@color/black"
             android:textSize="16sp"
             tools:text="Publication date of article" />

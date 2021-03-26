@@ -17,8 +17,11 @@
 package com.example.android.hughsnewsapp;
 
 
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,6 +47,7 @@ public class QueryUtils {
     }
 
     /** Query the Guardian news dataset and return a list of {@link News} objects.*/
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static List<News> fetchNewsData(String requestUrl) {
         // Create URL object
         URL url = createUrl(requestUrl);
@@ -57,10 +61,9 @@ public class QueryUtils {
         }
 
         // Extract relevant fields from the JSON response and create a list of {@link News} articles
-        List<News> newsArticlesList = extractFeatureFromJson(jsonResponse);
 
         // Return the list of {@link News} articles
-        return newsArticlesList;
+        return extractFeatureFromJson(jsonResponse);
     }
 
     /** Returns new URL object from the given string URL. */
@@ -75,6 +78,7 @@ public class QueryUtils {
     }
 
     /** Make an HTTP request to the given URL and return a String as the response.*/
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private static String makeHttpRequest(URL url) throws IOException {
         String jsonResponse = "";
 
@@ -118,13 +122,11 @@ public class QueryUtils {
      * Convert the {@link InputStream} into a String which contains the whole JSON response from the
      * server.
      */
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private static String readFromStream(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
         if (inputStream != null) {
-            InputStreamReader inputStreamReader = null;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-            }
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
             BufferedReader reader = new BufferedReader(inputStreamReader);
             String line = reader.readLine();
             while (line != null) {
@@ -150,34 +152,42 @@ public class QueryUtils {
         // is formatted, a JSONException exception object will be thrown.
         // Catch the exception so the app doesn't crash, and print the error message to the logs.
         try {
-
             // Create a JSONObject from the JSON response string
             JSONObject baseJsonResponse = new JSONObject(newsJSON);
 
-            // Extract the JSONArray associated with the key called "response",
+            JSONObject articles = baseJsonResponse.getJSONObject("response");
+
+            JSONArray resultsArray = articles.getJSONArray("results");
+            // Extract the JSONArray associated with the key called "results",
             // which represents a list of response (or news articles).
-            JSONArray newsArray = baseJsonResponse.getJSONArray("results");
+            // JSONArray newsArray = baseJsonResponse.getJSONArray("response");
 
             // For each news article in the newsArticleArray, create an {@link News} object
-            for (int i = 0; i < newsArray.length(); i++) {
+            for (int i = 0; i < resultsArray.length(); i++) {
 
-                // Get a single earthquake at position i within the list of earthquakes
-                JSONObject currentNewsArticle = newsArray.getJSONObject(i);
+                // Get a single new article at position i within the list of news articles
+                JSONObject currentNewsArticle = resultsArray.getJSONObject(i);
+
+                // For a given news article, extract the JSONObject associated with the
+                // key called "results", which represents a list of all properties
+                // for that earthquake.
+                //JSONObject results = currentNewsArticle.getJSONObject("results");
 
                 // For a given news article, extract the JSONObject associated with the
                 // key called "currentNewsArticle"
-
                 // Extract the value for the key called "webTitle"
                 String title  = currentNewsArticle.getString("webTitle");
 
                 // Extract the value for the key called "webPublicationDate"
-                long time = currentNewsArticle.getLong("webPublicationDate");
+
+                String publicationDate = currentNewsArticle.getString("webPublicationDate");
 
                 // Extract the value for the key called "webUrl"
                 String url = currentNewsArticle.getString("webUrl");
 
+
                 // Create a new {@link News} object with the Title, time and URL from the JSON response.
-                News news = new News(title, time, url);
+                News news = new News(title, publicationDate, url);
 
                 // Add the new {@link News} to the list of News Articles.
                 newsArticlesList.add(news);
@@ -190,7 +200,7 @@ public class QueryUtils {
             Log.e("QueryUtils", "Problem parsing the news JSON results", e);
         }
 
-        // Return the list of earthquakes
+        // Return the list of new articles
         return newsArticlesList;
     }
 }

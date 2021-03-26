@@ -23,7 +23,7 @@ public class News {
     private final String mTitle;
 
     /** article date */
-    private final long mTimeInMilliseconds;
+    private final String mPublicationDate;
 
     /** URL of new article  **/
     private final String mUrl;
@@ -31,13 +31,13 @@ public class News {
     /**
      * Constructor
      * @param title title of news article
-     * @param timeInMilliseconds the date the article was published
+     * @param publicationDate the date the article was published
      *  @param url is the website URL to find more details about the new article
      */
 
-    public News(String title, long timeInMilliseconds, String url){
+    public News(String title, String publicationDate, String url){
         mTitle = title;
-        mTimeInMilliseconds = timeInMilliseconds;
+        mPublicationDate = publicationDate;
         mUrl = url;
     }
 
@@ -45,8 +45,8 @@ public class News {
     public String getTitle(){ return mTitle; }
 
     /** Return the publication date */
-    public long getTimeInMilliseconds() {
-        return mTimeInMilliseconds;
+    public String getPublicationDate() {
+        return mPublicationDate;
     }
 
     /** Return the website URL for the full details of the article*/
