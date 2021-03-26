@@ -117,10 +117,12 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
 
         // buildUpon prepares the baseUri that was just parsed so that the add query param can added to it
         Uri.Builder uriBuilder = baseUri.buildUpon();
-
+//https://content.guardianapis.com/search?section=politics&order-by=relevance&show-tags=contributor&page-size=10&q=brexit&api-key=test
         // Append query parameter and its value. E.g. the 'order-by=relevance'
-        uriBuilder.appendQueryParameter("order-by", "relevance");
-        uriBuilder.appendQueryParameter("page-size", "20");
+        //uriBuilder.appendQueryParameter("section", "politics");
+        uriBuilder.appendQueryParameter("order-by", "newest");
+        uriBuilder.appendQueryParameter("show-tags", "contributor");
+        uriBuilder.appendQueryParameter("page-size", "10");
         uriBuilder.appendQueryParameter("q", "brexit");
         uriBuilder.appendQueryParameter("api-key", "test");
 

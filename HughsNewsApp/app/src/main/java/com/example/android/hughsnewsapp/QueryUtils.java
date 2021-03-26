@@ -136,6 +136,7 @@ public class QueryUtils {
      * Return a list of {@link News} objects that has been built up from parsing the given JSON response.
      */
     private static List<News> extractFeatureFromJson(String newsJSON) {
+
         // If the JSON string is empty or null, then return early.
         if (TextUtils.isEmpty(newsJSON)) {
             return null;
@@ -164,18 +165,29 @@ public class QueryUtils {
                 // Get a single new article at position i within the list of news articles
                 JSONObject currentNewsArticle = resultsArray.getJSONObject(i);
 
-                // For a given news article, extract the JSONObject associated with the
-                // key called "results", which represents a list of all properties
-                // for that earthquake.
-                //JSONObject results = currentNewsArticle.getJSONObject("results");
+                // Extract the value for the key called "sectionName")
+                String sectionName = currentNewsArticle.getString("sectionName");
 
                 // For a given news article, extract the JSONObject associated with the
                 // key called "currentNewsArticle"
                 // Extract the value for the key called "webTitle"
                 String title  = currentNewsArticle.getString("webTitle");
 
-                // Extract the value for the key called "webPublicationDate"
+                // Extract the value for the key called "webTitle" from the array 'tags'
+                JSONArray authorArray = currentNewsArticle.getJSONArray("tags");
+                // Reference https://knowledge.udacity.com/questions/203555
 
+                String author = "";
+                if(authorArray !=null){
+                    for(int j = 0; j < authorArray.length(); j++){
+                        JSONObject contributor = authorArray.getJSONObject(j);
+                        author = contributor.getString("webTitle");
+                    }
+                }
+                else author = "Letter to Editor";
+
+
+                // Extract the value for the key called "webPublicationDate"
                 String publicationDate = currentNewsArticle.getString("webPublicationDate");
 
                 // Extract the value for the key called "webUrl"
@@ -183,7 +195,7 @@ public class QueryUtils {
 
 
                 // Create a new {@link News} object with the Title, time and URL from the JSON response.
-                News news = new News(title, publicationDate, url);
+                News news = new News(sectionName, title, publicationDate, author, url);
 
                 // Add the new {@link News} to the list of News Articles.
                 newsArticlesList.add(news);

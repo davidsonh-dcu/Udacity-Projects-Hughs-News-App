@@ -19,8 +19,14 @@ package com.example.android.hughsnewsapp;
  * An {@link News} object contains information related toa single news article
  */
 public class News {
+    /** Section name*/
+    private final String mSectionName;
+
     /** news article title */
     private final String mTitle;
+
+    /** author of article */
+    private final String mAuthor;
 
     /** article date */
     private final String mPublicationDate;
@@ -30,16 +36,23 @@ public class News {
 
     /**
      * Constructor
+     * @param sectionName name of section
+     * @param author author(s) of article
      * @param title title of news article
      * @param publicationDate the date the article was published
      *  @param url is the website URL to find more details about the new article
      */
 
-    public News(String title, String publicationDate, String url){
+    public News(String sectionName, String title, String publicationDate, String author, String url){
+        mSectionName = sectionName;
         mTitle = title;
         mPublicationDate = publicationDate;
+        mAuthor = author;
         mUrl = url;
     }
+
+    /** Return the title of the section name*/
+    public String getSectionName(){ return mSectionName; }
 
     /** Return the title of the news article*/
     public String getTitle(){ return mTitle; }
@@ -48,6 +61,9 @@ public class News {
     public String getPublicationDate() {
         return mPublicationDate;
     }
+
+    /** Return the title of the article author(s)*/
+    public String getAuthor(){ return mAuthor; }
 
     /** Return the website URL for the full details of the article*/
     public String getUrl(){

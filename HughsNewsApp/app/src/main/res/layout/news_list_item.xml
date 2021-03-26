@@ -17,7 +17,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="80dp"
     android:orientation="horizontal"
     android:paddingEnd="16dp"
     android:paddingLeft="16dp"
@@ -25,7 +25,19 @@
     android:paddingStart="8dp"
     android:baselineAligned="false">
 
-     <LinearLayout
+    <TextView
+        android:id="@+id/news_section_textView"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-medium"
+        android:maxLines="2"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        tools:text="World news"
+        android:layout_marginTop="16dp"/>
+
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -42,7 +54,7 @@
             android:fontFamily="sans-serif-medium"
             android:maxLines="2"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="14sp"
             tools:text="Title of article" />
 
         <TextView
@@ -52,28 +64,17 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="14sp"
             tools:text="Publication date of article" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:orientation="vertical">
-
         <TextView
-            android:id="@+id/politics_or_opinion_textView"
+            android:id="@+id/author_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
             android:textColor="@color/black"
             android:textSize="12sp"
-            tools:text="Mar 6, 2010" />
-
+            tools:text="Aurthor" />
 
     </LinearLayout>
+
 </LinearLayout>

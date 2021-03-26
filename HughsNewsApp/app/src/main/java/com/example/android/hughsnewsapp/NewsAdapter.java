@@ -55,15 +55,21 @@ public class NewsAdapter extends ArrayAdapter<News> {
 
         // Find the news at the given position in the list of news articles
         News currentNews = getItem(position);
+        // Find the TextView with view ID Section
+        TextView authorTextView = listItemView.findViewById(R.id.author_textView);
+        authorTextView.setText(currentNews.getAuthor());
 
         // Find the TextView with view ID title
         TextView titleOfArticleTextView = listItemView.findViewById(R.id.news_article_title_textView);
         // get the title of the news article from the current location news object and set in title view
         titleOfArticleTextView.setText(currentNews.getTitle());
 
+        // Find the TextView with view ID author
+        TextView sectionNameTextView = listItemView.findViewById(R.id.news_section_textView);
+        sectionNameTextView.setText(currentNews.getSectionName());
+
         // Find the TextView with view ID publication date
         TextView publicationDateTextView = listItemView.findViewById(R.id.article_publication_date_textView);
-
         String formattedDate = formatDate(currentNews.getPublicationDate());
         // get the publication date  of the news article from the current location news object and set in date view
         publicationDateTextView.setText(formattedDate);
