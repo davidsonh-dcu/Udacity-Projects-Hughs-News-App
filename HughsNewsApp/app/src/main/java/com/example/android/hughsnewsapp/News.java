@@ -16,8 +16,7 @@
 package com.example.android.hughsnewsapp;
 
 /**
- * An {@link News} object contains information related toa single news article
- */
+ * An {@link News} object contains information related toa single news article */
 public class News {
     /** Section name*/
     private final String mSectionName;
@@ -40,7 +39,7 @@ public class News {
      * @param author author(s) of article
      * @param title title of news article
      * @param publicationDate the date the article was published
-     *  @param url is the website URL to find more details about the new article
+     * @param url is the website URL to find more details about the new article
      */
 
     public News(String sectionName, String title, String publicationDate, String author, String url){

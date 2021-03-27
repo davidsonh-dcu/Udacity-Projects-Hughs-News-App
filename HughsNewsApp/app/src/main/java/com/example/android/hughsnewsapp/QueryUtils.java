@@ -181,9 +181,9 @@ public class QueryUtils {
 
                 String author;
                 if(tagsArray.length() >= 0){
-                        JSONObject contributor = tagsArray.getJSONObject(0);
-                        author = contributor.getString("webTitle");
-                    }
+                    JSONObject contributor = tagsArray.getJSONObject(0);
+                    author = contributor.getString("webTitle");
+                }
                 else author = "@string/letter_to_editor";
 
                 // Extract the value for the key called "webPublicationDate"
@@ -191,7 +191,6 @@ public class QueryUtils {
 
                 // Extract the value for the key called "webUrl"
                 String url = currentNewsArticle.getString("webUrl");
-
 
                 // Create a new {@link News} object with the Title, time and URL from the JSON response.
                 News news = new News(sectionName, title, publicationDate, author, url);
