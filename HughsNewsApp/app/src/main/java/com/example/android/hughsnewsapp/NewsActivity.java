@@ -33,8 +33,6 @@ import java.util.List;
 
 public class NewsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<News>> {
 
-    public static final String LOG_TAG = NewsActivity.class.getName();
-
     /** URL for Brexit news data from the Guardian news site  dataset */
     private static final String GUARDIAN_REQUEST_URL ="https://content.guardianapis.com/search?";
 
@@ -53,7 +51,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.news_activity);
 
         // Find a reference to the {@link ListView} in the layout
-        ListView newsListView = findViewById(R.id.list);
+        ListView newsListView = findViewById(R.id.news_list);
 
         // View when no data is available
         mEmptyStateTextView = findViewById(R.id.empty_view);
@@ -122,7 +120,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         //uriBuilder.appendQueryParameter("section", "politics");
         uriBuilder.appendQueryParameter("order-by", "newest");
         uriBuilder.appendQueryParameter("show-tags", "contributor");
-        uriBuilder.appendQueryParameter("page-size", "10");
+        uriBuilder.appendQueryParameter("page-size", "20");
         uriBuilder.appendQueryParameter("q", "brexit");
         uriBuilder.appendQueryParameter("api-key", "test");
 
@@ -138,9 +136,6 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
 
         // Set empty state text to display "No news articles found."
         mEmptyStateTextView.setText(R.string.no_news);
-
-        // Clear the adapter of previous news data
-//        mAdapter.clear();
 
         // If there is a valid list of {@link News} articles, then add them to the adapter's
         // data set. This will trigger the ListView to update.

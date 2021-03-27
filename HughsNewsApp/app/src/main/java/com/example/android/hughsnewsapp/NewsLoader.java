@@ -26,8 +26,6 @@ import java.util.List;
 
 /** Loads a list of news articles by using an AsyncTask to perform the network request to the given URL.*/
 public class NewsLoader extends AsyncTaskLoader<List<News>> {
-    /** Tag for log messages */
-    private static final String LOG_TAG = NewsLoader.class.getName();
 
     /** Query URL */
     private final String mUrl;

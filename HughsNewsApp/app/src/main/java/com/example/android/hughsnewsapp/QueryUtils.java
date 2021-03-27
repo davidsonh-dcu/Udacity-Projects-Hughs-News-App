@@ -16,10 +16,8 @@
 
 package com.example.android.hughsnewsapp;
 
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
-import androidx.annotation.RequiresApi;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +32,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.android.hughsnewsapp.Constants.HTTP_SET_CONNECT_TIMEOUT;
+import static com.example.android.hughsnewsapp.Constants.HTTP_SET_READ_TIME;
+import static com.example.android.hughsnewsapp.Constants.HTTP_SUCCESS_CODE;
+
 public class QueryUtils {
     /** Tag for the log messages */
     private static final String LOG_TAG = QueryUtils.class.getSimpleName();
@@ -43,7 +45,7 @@ public class QueryUtils {
     }
 
     /** Query the Guardian news dataset and return a list of {@link News} objects.*/
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     public static List<News> fetchNewsData(String requestUrl) {
         // Create URL object
         URL url = createUrl(requestUrl);
@@ -74,7 +76,7 @@ public class QueryUtils {
     }
 
     /** Make an HTTP request to the given URL and return a String as the response.*/
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     private static String makeHttpRequest(URL url) throws IOException {
         String jsonResponse = "";
 
@@ -86,14 +88,14 @@ public class QueryUtils {
         InputStream inputStream = null;
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setReadTimeout(10000 /* milliseconds */);
-            urlConnection.setConnectTimeout(15000 /* milliseconds */);
+            urlConnection.setReadTimeout(HTTP_SET_READ_TIME);
+            urlConnection.setConnectTimeout(HTTP_SET_CONNECT_TIMEOUT);
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
 
             // If the request was successful (response code 200), then read the input stream
             // and parse the response.
-            if (urlConnection.getResponseCode() == 200) {
+            if (urlConnection.getResponseCode() == HTTP_SUCCESS_CODE) {
                 inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
             } else {
@@ -118,7 +120,7 @@ public class QueryUtils {
      * Convert the {@link InputStream} into a String which contains the whole JSON response from the
      * server.
      */
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     private static String readFromStream(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
         if (inputStream != null) {
@@ -174,18 +176,15 @@ public class QueryUtils {
                 String title  = currentNewsArticle.getString("webTitle");
 
                 // Extract the value for the key called "webTitle" from the array 'tags'
-                JSONArray authorArray = currentNewsArticle.getJSONArray("tags");
+                JSONArray tagsArray = currentNewsArticle.getJSONArray("tags");
                 // Reference https://knowledge.udacity.com/questions/203555
 
-                String author = "";
-                if(authorArray !=null){
-                    for(int j = 0; j < authorArray.length(); j++){
-                        JSONObject contributor = authorArray.getJSONObject(j);
+                String author;
+                if(tagsArray.length() >= 0){
+                        JSONObject contributor = tagsArray.getJSONObject(0);
                         author = contributor.getString("webTitle");
                     }
-                }
-                else author = "Letter to Editor";
-
+                else author = "@string/letter_to_editor";
 
                 // Extract the value for the key called "webPublicationDate"
                 String publicationDate = currentNewsArticle.getString("webPublicationDate");
